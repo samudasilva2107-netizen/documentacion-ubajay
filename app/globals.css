@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  
+  /* Ubajay Brand Colors */
+  --emerald-50: #ecfdf5;
+  --emerald-100: #d1fae5;
+  --emerald-450: #059669;
+  --emerald-500: #10b981;
+  --emerald-600: #047857;
+  --emerald-700: #064e3b;
+  --wood: #5d2f11;
+}
+
+@layer base {
+  body {
+    @apply bg-[var(--background)] text-[var(--foreground)] antialiased;
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+@layer components {
+  .hero-v7 {
+    min-height: 65vh;
+    @apply w-full flex items-center justify-center bg-[var(--emerald-700)] bg-cover bg-center;
+    background-image: linear-gradient(to bottom, rgba(2, 44, 34, 0.4), rgba(2, 44, 34, 0.7)),
+      url('https://firebasestorage.googleapis.com/v0/b/ubajaydigital.firebasestorage.app/o/IMG_9361%20(1).webp?alt=media&token=e7509636-2b88-4678-b53f-9f4c2a33c8c2');
+  }
+
+  .info-card {
+    @apply bg-white rounded-[2rem] border border-slate-200 transition-transform duration-300 h-full border-b-4 border-b-transparent;
+  }
+
+  .info-card:hover {
+    @apply -translate-y-[5px] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.05)];
+  }
+
+  .card-pro {
+    @apply bg-white rounded-[1.25rem] border-l-4 border-l-[var(--emerald-450)] border-b-8 border-b-[var(--wood)] transition-transform duration-200 flex flex-col h-full overflow-hidden shadow-[0_4px_10px_rgba(0,0,0,0.04)] cursor-pointer;
+  }
+
+  .search-container {
+    @apply w-[95%] max-w-[600px] bg-white rounded-full p-[0.3rem] pl-[1.2rem] flex items-center shadow-[0_10px_30px_rgba(0,0,0,0.1)] border border-slate-200;
+  }
+
+  .search-btn {
+    @apply bg-[var(--emerald-500)] text-white rounded-full py-[0.6rem] px-[1.5rem] font-extrabold text-[0.75rem] tracking-wider transition-all border-none cursor-pointer;
+  }
+
+  .search-btn:active {
+    @apply scale-95;
+  }
+}
