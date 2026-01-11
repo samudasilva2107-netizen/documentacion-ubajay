@@ -18,7 +18,7 @@ interface BusinessCardProps {
 export function BusinessCard({ business }: BusinessCardProps) {
     return (
         <div className="card-pro">
-            <div className="media-box">
+            <div className="media-box aspect-square">
                 {business.imagen && business.imagen.startsWith("http") ? (
                     <img src={business.imagen} alt={business.nombre} />
                 ) : (

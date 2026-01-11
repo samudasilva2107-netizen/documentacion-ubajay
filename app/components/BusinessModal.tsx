@@ -13,12 +13,17 @@ interface BusinessModalProps {
         whatsapp?: string;
         direccion?: string;
         horarios?: string;
+        coords?: string;
     };
     onClose: () => void;
 }
 
 export function BusinessModal({ business, onClose }: BusinessModalProps) {
     if (!business) return null;
+
+    const mapsUrl = business.coords
+        ? `https://www.google.com/maps/search/?api=1&query=${business.coords}`
+        : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${business.nombre} Ubajay Entre Rios`)}`;
 
     return (
         <div className="fixed inset-0 z-[2000] bg-slate-900/90 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-300">
@@ -34,7 +39,7 @@ export function BusinessModal({ business, onClose }: BusinessModalProps) {
 
                 <div className="overflow-y-auto scrollbar-hide">
                     {/* Media Header (Video or Image) */}
-                    <div className="aspect-video bg-black relative flex items-center justify-center">
+                    <div className="aspect-video bg-black relative flex items-center justify-center overflow-hidden">
                         {business.videoUrl ? (
                             <video
                                 src={business.videoUrl}
@@ -80,18 +85,26 @@ export function BusinessModal({ business, onClose }: BusinessModalProps) {
                             )}
                         </div>
 
-                        {business.whatsapp && (
-                            <div className="grid grid-cols-1 gap-4">
+                        <div className="grid grid-cols-2 gap-4">
+                            {business.whatsapp && (
                                 <a
                                     href={`https://wa.me/${business.whatsapp}`}
                                     target="_blank"
-                                    className="flex items-center justify-center gap-2 bg-green-600 text-white py-4 rounded-2xl font-black text-xs shadow-xl active:scale-95 transition-all hover:bg-green-700 uppercase tracking-widest"
+                                    className="flex items-center justify-center gap-2 bg-green-600 text-white py-4 rounded-2xl font-black text-[10px] shadow-xl active:scale-95 transition-all hover:bg-green-700 uppercase tracking-widest"
                                 >
                                     <MessageCircle className="w-5 h-5" />
-                                    Enviar WhatsApp
+                                    WhatsApp
                                 </a>
-                            </div>
-                        )}
+                            )}
+                            <a
+                                href={mapsUrl}
+                                target="_blank"
+                                className="flex items-center justify-center gap-2 bg-blue-600 text-white py-4 rounded-2xl font-black text-[10px] shadow-xl active:scale-95 transition-all hover:bg-blue-700 uppercase tracking-widest"
+                            >
+                                <MapPin className="w-5 h-5" />
+                                Cómo llegar
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

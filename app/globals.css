@@ -14,6 +14,29 @@
 
   --background: #f8fafc;
   --foreground: #0f172a;
+
+  --color-brand-emerald-50: #ecfdf5;
+  --color-brand-emerald-100: #d1fae5;
+  --color-brand-emerald-450: #059669;
+  --color-brand-emerald-500: #10b981;
+  --color-brand-emerald-600: #047857;
+  --color-brand-emerald-700: #064e3b;
+  --color-brand-wood: #5d2f11;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  &.dark {
+    --background: #0f172a;
+    --foreground: #f1f5f9;
+    --color-brand-emerald-50: #064e3b;
+    --color-brand-emerald-100: #065f46;
+    --color-brand-emerald-450: #10b981;
+    --color-brand-emerald-500: #34d399;
+    --color-brand-emerald-600: #6ee7b7;
+    --color-brand-emerald-700: #a7f3d0;
+  }
 }
 
 @layer base {
@@ -42,9 +65,9 @@
   }
 
   .info-card {
-    background-color: white;
+    background-color: var(--card-bg);
     border-radius: 2rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--card-border);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     height: 100%;
     border-bottom: 4px solid transparent;
@@ -56,7 +79,7 @@
   }
 
   .card-pro {
-    background-color: white;
+    background-color: var(--card-bg);
     border-radius: 1.25rem;
     border-left: 4px solid var(--color-brand-emerald-450);
     border-bottom: 8px solid var(--color-brand-wood);
@@ -72,14 +95,14 @@
   .search-container {
     width: 95%;
     max-width: 600px;
-    background-color: white;
+    background-color: var(--card-bg);
     border-radius: 9999px;
     padding: 0.3rem;
     padding-left: 1.2rem;
     display: flex;
     align-items: center;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--card-border);
   }
 
   .search-btn {

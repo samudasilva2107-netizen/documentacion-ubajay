@@ -40,9 +40,15 @@ export default function Home() {
       return;
     }
 
+    // Split by commas (AI keywords) or just use the term
+    const searchTerms = term.toLowerCase()
+      .split(',')
+      .map(t => t.trim())
+      .filter(t => t.length > 0);
+
     const filtered = businesses.filter((b) => {
       const content = `${b.nombre} ${b.categoria} ${b.descripcion}`.toLowerCase();
-      return content.includes(term.toLowerCase());
+      return searchTerms.some(t => content.includes(t));
     });
     setFilteredBusinesses(filtered);
   };
