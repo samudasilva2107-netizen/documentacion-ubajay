@@ -5,6 +5,8 @@ import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Hero } from "./components/Hero";
 import { BusinessCard } from "./components/BusinessCard";
+import { InfoGrid } from "./components/InfoGrid";
+import { Footer } from "./components/Footer";
 import { Loader2 } from "lucide-react";
 
 export default function Home() {
@@ -47,6 +49,9 @@ export default function Home() {
       <Hero onSearch={handleSearch} />
 
       <section className="max-w-7xl mx-auto px-4 py-16">
+        {/* Info Bento Grid */}
+        <InfoGrid />
+
         <div className="flex justify-between items-end mb-12">
           <div>
             <h2 className="text-3xl font-bold text-slate-800 font-serif">Explorar Ubajay</h2>
@@ -59,7 +64,7 @@ export default function Home() {
 
         {loading ? (
           <div className="flex justify-center py-20">
-            <Loader2 className="w-10 h-10 animate-spin text-[var(--emerald-500)]" />
+            <Loader2 className="w-10 h-10 animate-spin text-[var(--color-brand-emerald-500)]" />
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -76,14 +81,7 @@ export default function Home() {
         )}
       </section>
 
-      <footer className="bg-[var(--emerald-700)] text-white/50 py-12 px-4 text-center">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] mb-4">Ubajay Digital © 2026</p>
-        <div className="flex justify-center gap-6 text-[10px] font-black uppercase">
-          <a href="#" className="hover:text-white transition-colors">Inicio</a>
-          <a href="#" className="hover:text-white transition-colors">Admin</a>
-          <a href="#" className="hover:text-white transition-colors">Legales</a>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }
