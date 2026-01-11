@@ -10,12 +10,14 @@ import { Footer } from "./components/Footer";
 import { BusinessModal } from "./components/BusinessModal";
 import { Loader2 } from "lucide-react";
 import { ThemeToggle } from "./components/ThemeToggle";
+import { checkIfOpen } from "@/lib/utils";
 
 export default function Home() {
   const [businesses, setBusinesses] = useState<any[]>([]);
   const [filteredBusinesses, setFilteredBusinesses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [onlyOpen, setOnlyOpen] = useState(false);
   const [selectedBusiness, setSelectedBusiness] = useState<any>(null);
 
   useEffect(() => {
@@ -41,15 +43,42 @@ export default function Home() {
     }
 
     // Split by commas (AI keywords) or just use the term
-    const searchTerms = term.toLowerCase()
-      .split(',')
-      .map(t => t.trim())
-      .filter(t => t.length > 0);
+    let currentFilteredBusinesses = businesses;
 
-    const filtered = businesses.filter((b) => {
-      const content = `${b.nombre} ${b.categoria} ${b.descripcion}`.toLowerCase();
-      return searchTerms.some(t => content.includes(t));
-    });
+    if (term.trim()) {
+      const searchTerms = term.toLowerCase()
+        .split(',')
+        .map(t => t.trim())
+        .filter(t => t.length > 0);
+
+      currentFilteredBusinesses = businesses.filter((b) => {
+        const content = `${b.nombre} ${b.categoria} ${b.descripcion}`.toLowerCase();
+        return searchTerms.some(t => content.includes(t));
+      });
+    }
+
+    if (onlyOpen) {
+      currentFilteredBusinesses = currentFilteredBusinesses.filter((b) => checkIfOpen(b.horarios || '', b.esta_abierto));
+    }
+    setFilteredBusinesses(currentFilteredBusinesses);
+  };
+
+  const toggleOnlyOpen = () => {
+    const newOnlyOpen = !onlyOpen;
+    setOnlyOpen(newOnlyOpen);
+
+    let filtered = businesses;
+    if (searchTerm) {
+      const searchTerms = searchTerm.toLowerCase().split(',').map(t => t.trim()).filter(t => t.length > 0);
+      filtered = filtered.filter((b) => {
+        const content = `${b.nombre} ${b.categoria} ${b.descripcion}`.toLowerCase();
+        return searchTerms.some(t => content.includes(t));
+      });
+    }
+
+    if (newOnlyOpen) {
+      filtered = filtered.filter((b) => checkIfOpen(b.horarios || '', b.esta_abierto));
+    }
     setFilteredBusinesses(filtered);
   };
 
@@ -61,14 +90,25 @@ export default function Home() {
         {/* Info Bento Grid */}
         <InfoGrid />
 
-        <div className="flex justify-between items-end mb-12">
-          <div>
-            <h2 className="text-3xl font-bold text-slate-800 dark:text-white font-serif">Explorar Ubajay</h2>
-            <p className="text-slate-500 italic">Encontrá lo que necesitás en nuestra comunidad</p>
+        <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
+          <h2 className="text-3xl font-black text-slate-800 dark:text-white uppercase tracking-tighter">
+            Explorar Ubajay
+          </h2>
+          <div className="flex bg-white dark:bg-slate-800 p-1.5 rounded-2xl shadow-xl border border-slate-100 dark:border-white/5">
+            <button
+              onClick={() => { setOnlyOpen(false); handleSearch(searchTerm); }}
+              className={`px-6 py-2.5 rounded-xl text-xs font-black transition-all ${!onlyOpen ? 'bg-emerald-600 text-white shadow-lg' : 'text-slate-400'}`}
+            >
+              TODOS
+            </button>
+            <button
+              onClick={toggleOnlyOpen}
+              className={`px-6 py-3 rounded-xl text-xs font-black transition-all flex items-center gap-2 ${onlyOpen ? 'bg-green-600 text-white shadow-lg' : 'text-slate-400'}`}
+            >
+              <div className={`w-2 h-2 rounded-full ${onlyOpen ? 'bg-white animate-pulse' : 'bg-slate-300'}`}></div>
+              ABIERTOS AHORA
+            </button>
           </div>
-          <span className="text-xs font-black text-slate-400 uppercase tracking-widest">
-            {filteredBusinesses.length} Resultados
-          </span>
         </div>
 
         {loading ? (

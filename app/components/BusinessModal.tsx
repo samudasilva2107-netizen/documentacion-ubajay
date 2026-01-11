@@ -1,6 +1,7 @@
 "use client";
 
-import { X, MessageCircle, MapPin, Clock, Play } from "lucide-react";
+import { X, MessageCircle, MapPin, Clock } from "lucide-react";
+import { checkIfOpen } from "@/lib/utils";
 
 interface BusinessModalProps {
     business: {
@@ -14,6 +15,7 @@ interface BusinessModalProps {
         direccion?: string;
         horarios?: string;
         coords?: string;
+        esta_abierto?: boolean | string;
     };
     onClose: () => void;
 }
@@ -21,6 +23,7 @@ interface BusinessModalProps {
 export function BusinessModal({ business, onClose }: BusinessModalProps) {
     if (!business) return null;
 
+    const isOpen = checkIfOpen(business.horarios || '', business.esta_abierto);
     const mapsUrl = business.coords
         ? `https://www.google.com/maps/search/?api=1&query=${business.coords}`
         : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${business.nombre} Ubajay Entre Rios`)}`;
@@ -57,9 +60,15 @@ export function BusinessModal({ business, onClose }: BusinessModalProps) {
 
                     <div className="p-8">
                         <div className="flex justify-between items-center mb-4">
-                            <span className="text-[10px] font-black bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full uppercase tracking-widest leading-none">
+                            <span className="text-[10px] font-black bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full uppercase tracking-widest leading-none">
                                 {business.categoria}
                             </span>
+                            <div className="flex items-center gap-1.5">
+                                <span className={`w-2 h-2 rounded-full ${isOpen ? 'bg-green-500 animate-pulse' : 'bg-slate-400'}`}></span>
+                                <span className={`text-[10px] font-black uppercase ${isOpen ? 'text-green-600 dark:text-green-400' : 'text-slate-500'}`}>
+                                    {isOpen ? 'Abierto Ahora' : 'Cerrado'}
+                                </span>
+                            </div>
                         </div>
 
                         <h2 className="text-3xl font-bold text-slate-800 dark:text-white mb-4 font-serif leading-tight">
